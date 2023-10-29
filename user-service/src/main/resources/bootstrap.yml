@@ -1,0 +1,29 @@
+#微服务配置
+spring:
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      server-addr: 47.115.217.108:8848
+      # 注册
+      discovery:
+        namespace: clear_cloud
+        group: video-project
+        # 配置
+      config:
+        namespace: clear_cloud
+        group: video-project
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: redis-${spring.profiles.active}.yaml
+            group: resume-common
+            refresh: true
+          - data-id: qiniu-upload-${spring.profiles.active}.yaml
+            group: video-common
+            refresh: true
+          - data-id: mysql-${spring.profiles.active}.yaml
+            group: resume-common
+            refresh: true
+  profiles:
+    active: dev
