@@ -57,7 +57,7 @@ public class BaseResponse<T> implements Serializable {
         response.data = object;
         return response;
     }
-    //只限全局异常处理器使用
+    //todo 只限全局异常处理器、网管使用
     public static <T> BaseResponse<T> error(int code,String message) {
         BaseResponse<T> response = new BaseResponse<T>();
         response.code = code;

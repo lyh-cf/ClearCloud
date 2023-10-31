@@ -23,8 +23,8 @@ spring:
           - data-id: qiniu-upload-${spring.profiles.active}.yaml
             group: video-common
             refresh: true
-          - data-id: redis-${spring.profiles.active}.yaml
-            group: video-common
-            refresh: true
+#          - data-id: redis-${spring.profiles.active}.yaml
+#            group: video-common
+#            refresh: true
   profiles:
     active: dev

@@ -6,18 +6,46 @@
         <groupId>com.clearcloud</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <!--    必须要添加，不然maven插件运行会报错！    -->
+        <relativePath>../parent</relativePath> <!-- lookup parent from repository -->
     </parent>
     <artifactId>gateway</artifactId>
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
     </properties>
     <dependencies>
-
         <dependency>
             <groupId>com.clearcloud</groupId>
             <artifactId>base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <!--   bootstrap     -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!--    JWT    -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
+        <!-- fastjson ，json解析工具 -->
+        <!--    不能放在base工程    -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <!--   lombok     -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
         <!-- servlet Api 依赖 -->
         <dependency>
@@ -53,15 +81,22 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${org.springframework.boot.version}</version>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <mainClass>com.clearcloud.gateway.GatewayApplication</mainClass>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

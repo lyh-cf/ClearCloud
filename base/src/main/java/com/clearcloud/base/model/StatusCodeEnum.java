@@ -14,7 +14,8 @@ public enum StatusCodeEnum {
     PARAMS_ERROR(400, "请求参数错误"),
     NULL_ERROR(400, "请求数据为空"),
     NOT_LOGIN(401, "用户未登录"),
-    NO_AUTH(401, "无权限访问"),
+    UNAUTHORIZED_EXCEPTION_CODE(401,"Token解析异常"),
+    EXPIRED_JWT_EXCEPTION_CODE(444,"Token已过期"),
     SYSTEM_ERROR(500, "系统内部异常");
     private final int code;
     /**

@@ -16,14 +16,14 @@ spring:
         file-extension: yaml
         refresh-enabled: true
         shared-configs:
-          - data-id: redis-${spring.profiles.active}.yaml
-            group: resume-common
-            refresh: true
+#          - data-id: redis-${spring.profiles.active}.yaml
+#            group: video-common
+#            refresh: true
           - data-id: qiniu-upload-${spring.profiles.active}.yaml
             group: video-common
             refresh: true
           - data-id: mysql-${spring.profiles.active}.yaml
-            group: resume-common
+            group: video-common
             refresh: true
   profiles:
     active: dev

@@ -13,10 +13,10 @@ spring:
         group: video-project
         file-extension: yaml
         refresh-enabled: true
-        shared-configs:
-          - data-id: redis-${spring.profiles.active}.yaml
-            group: resume-common
-            refresh: true
+#        shared-configs:
+#          - data-id: redis-${spring.profiles.active}.yaml
+#            group: resume-common
+#            refresh: true
   profiles:
     active: dev
 
