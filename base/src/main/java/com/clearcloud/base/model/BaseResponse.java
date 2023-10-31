@@ -51,10 +51,9 @@ public class BaseResponse<T> implements Serializable {
         response.data = object;
         return response;
     }
-
-    public static <T> BaseResponse<T> error(T object) {
+    public static <T> BaseResponse<T> error(String message) {
         BaseResponse<T> response = error();
-        response.data = object;
+        response.setMessage(message);
         return response;
     }
     //todo 只限全局异常处理器、网管使用
@@ -64,6 +63,7 @@ public class BaseResponse<T> implements Serializable {
         response.message = message;
         return response;
     }
+
     public static <T> BaseResponse<T> error(StatusCodeEnum statusCodeEnum) {
         BaseResponse<T> response = new BaseResponse<T>();
         response.code = statusCodeEnum.getCode();

@@ -9,8 +9,8 @@ package com.clearcloud.base.model;
  */
 public enum StatusCodeEnum {
 
-    SUCCESS(0, "success"),
-    FAIL(1,"fail"),
+    SUCCESS(1, "success"),
+    FAIL(0,"fail"),
     PARAMS_ERROR(400, "请求参数错误"),
     NULL_ERROR(400, "请求数据为空"),
     NOT_LOGIN(401, "用户未登录"),

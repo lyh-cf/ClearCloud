@@ -34,6 +34,7 @@
         <org.projectlombok.version>1.18.24</org.projectlombok.version>
         <!--    JWT    -->
         <io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
+        <javax.xml.bind.version>2.3.1</javax.xml.bind.version>
         <!--   swagger     -->
         <io.springfox.version>2.9.2</io.springfox.version>
         <!--  bootstrap      -->
@@ -81,13 +82,17 @@
                 <artifactId>jjwt</artifactId>
                 <version>${io.jsonwebtoken.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${javax.xml.bind.version}</version>
+            </dependency>
             <!-- mapstruct 代码生成器，简化java bean之间的映射 -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${org.mapstruct.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>

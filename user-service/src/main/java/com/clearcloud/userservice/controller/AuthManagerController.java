@@ -47,6 +47,8 @@ public class AuthManagerController {
         if (userInfo == null) return BaseResponse.error("用户不存在");
         if (!userInfo.getPassWord().equals(SM3Util.encryptPassword(loginDTO.getPassWord())))return BaseResponse.error("密码错误");
         LoginVO loginVO= UserInfoMapstruct.INSTANCT.conver(userInfo);
+        loginVO.setAccess_token(JwtUtil.createAccessToken(userInfo.getPkUserId()));
+        loginVO.setRefresh_token(JwtUtil.createAccessToken(userInfo.getPkUserId()));
         return BaseResponse.success(loginVO);
     }
     @PostMapping("/register")
