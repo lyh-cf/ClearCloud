@@ -9,12 +9,16 @@ package com.clearcloud.userservice.dto;
  */
 
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 @Data
 public class LoginDTO implements Serializable {
      @NotNull(message = "邮箱不能为空")
+     @NotBlank(message = "邮箱不能为空")
      private String userEmail;
      @NotNull(message = "密码不能为空")
+     @NotBlank(message = "密码不能为空")
      private String passWord;
 }

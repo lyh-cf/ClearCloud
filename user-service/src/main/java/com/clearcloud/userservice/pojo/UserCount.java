@@ -1,6 +1,8 @@
 package com.clearcloud.userservice.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +16,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author lyh
- * @since 2023-10-30
+ * @since 2023-11-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -56,11 +58,13 @@ public class UserCount implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
 

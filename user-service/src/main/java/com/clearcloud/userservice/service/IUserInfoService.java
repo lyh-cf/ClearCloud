@@ -2,6 +2,7 @@ package com.clearcloud.userservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.clearcloud.userservice.pojo.UserInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -15,4 +16,6 @@ public interface IUserInfoService extends IService<UserInfo> {
      UserInfo getUserInfo(String userEmail);
 
      boolean checkUserEmailIsExist(String userEmail);
+
+     String uploadAvatar(MultipartFile file, Integer userId);
 }

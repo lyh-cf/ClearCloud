@@ -12,7 +12,6 @@ import com.alibaba.cloud.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.StatusCodeEnum;
-import com.clearcloud.gateway.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -24,7 +23,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
+import com.clearcloud.base.utils.JwtUtil;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;

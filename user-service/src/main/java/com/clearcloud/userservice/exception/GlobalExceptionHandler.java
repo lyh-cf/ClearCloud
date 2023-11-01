@@ -60,6 +60,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public BaseResponse<?> runtimeExceptionHandler(RuntimeException e) {
         log.error("MyException: ", e);
-        return BaseResponse.error(StatusCodeEnum.SYSTEM_ERROR.getCode(), e.getMessage());
+        return BaseResponse.error(StatusCodeEnum.SYSTEM_ERROR.getCode(), StatusCodeEnum.SYSTEM_ERROR.getMessage());
     }
 }
