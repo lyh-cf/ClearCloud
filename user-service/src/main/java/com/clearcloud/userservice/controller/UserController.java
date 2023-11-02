@@ -3,15 +3,14 @@ package com.clearcloud.userservice.controller;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
-import com.clearcloud.userservice.dto.LoginDTO;
-import com.clearcloud.userservice.dto.UserSelfInfoDTO;
+import com.clearcloud.userservice.model.dto.UserSelfInfoDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
-import com.clearcloud.userservice.pojo.UserCount;
-import com.clearcloud.userservice.pojo.UserInfo;
+import com.clearcloud.userservice.model.pojo.UserCount;
+import com.clearcloud.userservice.model.pojo.UserInfo;
 import com.clearcloud.userservice.service.impl.UserCountServiceImpl;
 import com.clearcloud.userservice.service.impl.UserInfoServiceImpl;
 import com.clearcloud.userservice.utils.RedisUtil;
-import com.clearcloud.userservice.vo.UserInformationVO;
+import com.clearcloud.userservice.model.vo.UserInformationVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -116,4 +114,5 @@ public class UserController {
         });
         return BaseResponse.success();
     }
+
 }

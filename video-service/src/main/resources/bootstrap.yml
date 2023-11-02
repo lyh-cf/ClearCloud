@@ -41,4 +41,4 @@ mybatis-plus:
   #告知映射文件的位置
   mapper-locations: classpath*:/mapper/**/*.xml
   #给POJO类起别名
-  type-aliases-package: com/clearcloud/videoservice/pojo
+  type-aliases-package: com/clearcloud/videoservice/model/pojo

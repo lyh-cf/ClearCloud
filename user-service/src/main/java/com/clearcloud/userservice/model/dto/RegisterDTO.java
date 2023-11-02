@@ -1,4 +1,4 @@
-package com.clearcloud.userservice.dto;
+package com.clearcloud.userservice.model.dto;
 
 import lombok.Data;
 

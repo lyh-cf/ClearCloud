@@ -1,4 +1,4 @@
-package com.clearcloud.userservice.pojo;
+package com.clearcloud.userservice.model.pojo;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

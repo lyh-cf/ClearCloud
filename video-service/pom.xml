@@ -24,6 +24,16 @@
             <artifactId>base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--  七牛云      -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <scope>compile</scope>
+        </dependency>
         <!--   redis     -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

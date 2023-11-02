@@ -1,6 +1,6 @@
 package com.clearcloud.userservice.service;
 
-import com.clearcloud.userservice.dto.RegisterDTO;
+import com.clearcloud.userservice.model.dto.RegisterDTO;
 
 /*
  *@title IAuthService

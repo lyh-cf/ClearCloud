@@ -1,7 +1,7 @@
 package com.clearcloud.userservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.clearcloud.userservice.pojo.UserInfo;
+import com.clearcloud.userservice.model.pojo.UserInfo;
 
 /**
  * <p>

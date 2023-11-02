@@ -1,9 +1,9 @@
 package com.clearcloud.userservice.service.impl;
 
-import com.clearcloud.userservice.dto.RegisterDTO;
+import com.clearcloud.userservice.model.dto.RegisterDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
-import com.clearcloud.userservice.pojo.UserCount;
-import com.clearcloud.userservice.pojo.UserInfo;
+import com.clearcloud.userservice.model.pojo.UserCount;
+import com.clearcloud.userservice.model.pojo.UserInfo;
 import com.clearcloud.userservice.service.IAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

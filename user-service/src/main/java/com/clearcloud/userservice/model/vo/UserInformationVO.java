@@ -1,4 +1,4 @@
-package com.clearcloud.userservice.vo;
+package com.clearcloud.userservice.model.vo;
 
 import lombok.Data;
 

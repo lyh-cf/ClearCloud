@@ -1,11 +1,11 @@
 package com.clearcloud.userservice.mapstruct;
 
-import com.clearcloud.userservice.dto.RegisterDTO;
-import com.clearcloud.userservice.dto.UserSelfInfoDTO;
-import com.clearcloud.userservice.pojo.UserCount;
-import com.clearcloud.userservice.pojo.UserInfo;
-import com.clearcloud.userservice.vo.LoginVO;
-import com.clearcloud.userservice.vo.UserInformationVO;
+import com.clearcloud.userservice.model.dto.RegisterDTO;
+import com.clearcloud.userservice.model.dto.UserSelfInfoDTO;
+import com.clearcloud.userservice.model.pojo.UserCount;
+import com.clearcloud.userservice.model.pojo.UserInfo;
+import com.clearcloud.userservice.model.vo.LoginVO;
+import com.clearcloud.userservice.model.vo.UserInformationVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

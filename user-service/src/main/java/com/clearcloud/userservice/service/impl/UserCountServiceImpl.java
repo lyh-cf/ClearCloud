@@ -1,10 +1,8 @@
 package com.clearcloud.userservice.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clearcloud.userservice.mapper.UserCountMapper;
-import com.clearcloud.userservice.pojo.UserCount;
-import com.clearcloud.userservice.pojo.UserInfo;
+import com.clearcloud.userservice.model.pojo.UserCount;
 import com.clearcloud.userservice.service.IUserCountService;
 import org.springframework.stereotype.Service;
 
