@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.clearcloud.videoservice.mapper.VideoInfoMapper">
 
+    <select id="getRecordsByIds" resultType="com.clearcloud.videoservice.model.pojo.VideoInfo">
+        SELECT * FROM your_table
+        WHERE id IN
+        <foreach item="item" collection="videoIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

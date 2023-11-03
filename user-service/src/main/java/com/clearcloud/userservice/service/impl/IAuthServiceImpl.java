@@ -1,14 +1,19 @@
 package com.clearcloud.userservice.service.impl;
 
+import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.userservice.model.dto.RegisterDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
 import com.clearcloud.userservice.model.pojo.UserCount;
 import com.clearcloud.userservice.model.pojo.UserInfo;
 import com.clearcloud.userservice.service.IAuthService;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /*
  *@title IAuthServiceImpl
@@ -24,6 +29,9 @@ public class IAuthServiceImpl implements IAuthService {
     private UserInfoServiceImpl userInfoService;
     @Autowired
     private UserCountServiceImpl userCountMapper;
+
+    @Resource(name = "redissonClient")
+    private RedissonClient redissonClient;
     @Transactional
     @Override
     public void registerUserInformation(RegisterDTO registerDTO) {
@@ -33,5 +41,9 @@ public class IAuthServiceImpl implements IAuthService {
         UserCount userCount=new UserCount();
         userCount.setPkUserId(userInfo.getPkUserId());
         userCountMapper.save(userCount);
+        //给每个用户注册一个bloom过滤器
+        RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter(RedisConstants.USER_BLOOM_FILTER_KEY_PREFIX+userInfo.getPkUserId());
+        //初始化，容量1000，错误率千分之三
+        bloomFilter.tryInit(RedisConstants.BLOOM_EXPECTED_ELEMENTS, RedisConstants.BLOOM_false_Positive_Rate);
     }
 }

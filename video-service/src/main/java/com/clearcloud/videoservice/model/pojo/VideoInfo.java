@@ -34,6 +34,11 @@ public class VideoInfo implements Serializable {
     private Integer userId;
 
     /**
+     * 分区类型
+     */
+    private String type;
+
+    /**
      * 视频描述
      */
     private String videoDescription;

@@ -3,11 +3,11 @@ package com.clearcloud.base.utils;
 
 import com.clearcloud.base.model.StatusCodeEnum;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.UUID;
-
 public class JwtUtil {
     //过期时间
     private static final long access_expire = 60 * 60 * 1000;
@@ -66,7 +66,7 @@ public class JwtUtil {
             Claims claims = claimsJws.getBody();
             return Integer.valueOf((String)claims.get("userId"));
         }
-        else throw new RuntimeException("Token获取失败");
+        return null;
     }
 
     public static String checkToken(String token) {

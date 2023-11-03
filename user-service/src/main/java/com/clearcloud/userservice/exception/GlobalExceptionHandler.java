@@ -4,7 +4,6 @@ package com.clearcloud.userservice.exception;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.StatusCodeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

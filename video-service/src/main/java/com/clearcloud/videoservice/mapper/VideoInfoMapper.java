@@ -3,6 +3,9 @@ package com.clearcloud.videoservice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.clearcloud.videoservice.model.pojo.VideoInfo;
 
+import java.util.List;
+import java.util.Set;
+
 
 /**
  * <p>
@@ -13,5 +16,5 @@ import com.clearcloud.videoservice.model.pojo.VideoInfo;
  * @since 2023-11-02
  */
 public interface VideoInfoMapper extends BaseMapper<VideoInfo> {
-
+    List<VideoInfo> getRecordsByIds(Set<Integer> videoIds);
 }
