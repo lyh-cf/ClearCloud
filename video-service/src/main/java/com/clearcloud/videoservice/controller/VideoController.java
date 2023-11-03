@@ -4,14 +4,14 @@ import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.videoservice.model.vo.VideoStreamVO;
-import com.clearcloud.videoservice.service.impl.VideoInfoServiceImpl;
-import com.google.common.hash.BloomFilter;
+import com.clearcloud.videoservice.service.LikeService;
+import com.clearcloud.videoservice.service.VideoCountService;
+import com.clearcloud.videoservice.service.VideoInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +32,9 @@ import java.util.List;
 @Api(tags = "视频接口")
 public class VideoController {
     @Autowired
-    private VideoInfoServiceImpl videoInfoService;
+    private VideoInfoService videoInfoService;
+    @Autowired
+    private LikeService likeService;
     @Resource(name = "redissonClient")
     private RedissonClient redissonClient;
     @ApiOperation("获取视频流接口")
@@ -62,6 +64,20 @@ public class VideoController {
         Integer userId=JwtUtil.getUserId(httpServletRequest);
         RBloomFilter<Integer> bloomFilter = redissonClient.getBloomFilter(RedisConstants.USER_BLOOM_FILTER_KEY_PREFIX + userId);
         bloomFilter.add(videoId);
+        return BaseResponse.success();
+    }
+    @ApiOperation("点赞接口")
+    @GetMapping("/likeVideo")
+    public BaseResponse<?> likeVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
+        Integer userId=JwtUtil.getUserId(httpServletRequest);
+        likeService.likeVideo(userId,videoId);
+        return BaseResponse.success();
+    }
+    @ApiOperation("取消点赞接口")
+    @GetMapping("/likeVideo")
+    public BaseResponse<?> cancelLikeVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
+        Integer userId=JwtUtil.getUserId(httpServletRequest);
+        likeService.cancelLikeVideo(userId,videoId);
         return BaseResponse.success();
     }
 }

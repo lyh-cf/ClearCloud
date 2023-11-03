@@ -7,8 +7,8 @@ import com.clearcloud.userservice.model.dto.LoginDTO;
 import com.clearcloud.userservice.model.dto.RegisterDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
 import com.clearcloud.userservice.model.pojo.UserInfo;
-import com.clearcloud.userservice.service.impl.IAuthServiceImpl;
-import com.clearcloud.userservice.service.impl.UserInfoServiceImpl;
+import com.clearcloud.userservice.service.AuthService;
+import com.clearcloud.userservice.service.UserInfoService;
 import com.clearcloud.userservice.utils.RedisUtil;
 import com.clearcloud.userservice.utils.SM3Util;
 import com.clearcloud.userservice.model.vo.LoginVO;
@@ -35,9 +35,9 @@ import javax.validation.Valid;
 @Api(tags = "认证接口")
 public class AuthManagerController {
     @Autowired
-    private UserInfoServiceImpl userInfoService;
+    private UserInfoService userInfoService;
     @Autowired
-    private IAuthServiceImpl authService;
+    private AuthService authService;
     @Autowired
     private RedisUtil redisUtil;
     @ApiOperation("登录认证")

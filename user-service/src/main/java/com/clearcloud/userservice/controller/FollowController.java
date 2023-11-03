@@ -7,7 +7,7 @@ import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
 import com.clearcloud.userservice.model.pojo.UserInfo;
 import com.clearcloud.userservice.model.vo.BasicUserInfoVO;
-import com.clearcloud.userservice.service.impl.FollowServiceImpl;
+import com.clearcloud.userservice.service.FollowService;
 import com.clearcloud.userservice.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +34,7 @@ import java.util.Set;
 @Api(tags = "用户之间交互接口")
 public class FollowController {
     @Autowired
-    private FollowServiceImpl followService;
+    private FollowService followService;
     @Autowired
     private RedisUtil redisUtil;
 

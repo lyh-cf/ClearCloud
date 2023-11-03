@@ -5,10 +5,9 @@ import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.videoservice.model.pojo.VideoCount;
 import com.clearcloud.videoservice.model.pojo.VideoInfo;
-import com.clearcloud.videoservice.service.impl.VideoCountServiceImpl;
-import com.clearcloud.videoservice.service.impl.VideoInfoServiceImpl;
+import com.clearcloud.videoservice.service.VideoCountService;
+import com.clearcloud.videoservice.service.VideoInfoService;
 import com.clearcloud.videoservice.model.vo.UploadVideoVO;
-import com.clearcloud.videoservice.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.concurrent.TimeUnit;
 
 /*
  *@title WorkController
@@ -33,13 +31,13 @@ import java.util.concurrent.TimeUnit;
 @Api(tags = "创作中心接口")
 public class WorkController {
     @Autowired
-    private VideoInfoServiceImpl videoInfoService;
+    private VideoInfoService videoInfoService;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     private TransactionTemplate transactionTemplate;
     @Autowired
-    private VideoCountServiceImpl videoCountService;
+    private VideoCountService videoCountService;
 
     @ApiOperation("视频上传接口")
     @PostMapping("/uploadVideo")

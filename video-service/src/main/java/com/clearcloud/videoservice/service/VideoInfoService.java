@@ -1,6 +1,7 @@
-package com.clearcloud.videoservice.service.impl;
+package com.clearcloud.videoservice.service;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.videoservice.mapper.VideoInfoMapper;
@@ -8,7 +9,6 @@ import com.clearcloud.videoservice.mapstruct.VideoMapstruct;
 import com.clearcloud.videoservice.model.pojo.VideoCount;
 import com.clearcloud.videoservice.model.pojo.VideoInfo;
 import com.clearcloud.videoservice.model.vo.VideoStreamVO;
-import com.clearcloud.videoservice.service.IVideoInfoService;
 import com.clearcloud.videoservice.utils.QiNiuUtil;
 import com.clearcloud.videoservice.model.vo.UploadVideoVO;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo> implements IVideoInfoService {
+public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  implements IService<VideoInfo> {
     @Autowired
     private QiNiuUtil qiNiuUtil;
     @Resource
@@ -42,7 +42,6 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     private RedissonClient redissonClient;
     @Resource
     private VideoInfoMapper videoInfoMapper;
-    @Override
     public UploadVideoVO uploadVideo(MultipartFile file, Integer userId) {
         //获取原始文件名
         String originalFilename = file.getOriginalFilename();

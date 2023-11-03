@@ -1,10 +1,10 @@
-package com.clearcloud.videoservice.service.impl;
+package com.clearcloud.videoservice.service;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clearcloud.videoservice.mapper.CommentMapper;
 import com.clearcloud.videoservice.model.pojo.Comment;
-import com.clearcloud.videoservice.service.ICommentService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +16,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-11-02
  */
 @Service
-public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
+public class CommentService extends ServiceImpl<CommentMapper, Comment> implements IService<Comment> {
 
 }

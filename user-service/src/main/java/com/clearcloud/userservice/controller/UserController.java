@@ -7,8 +7,8 @@ import com.clearcloud.userservice.model.dto.UserSelfInfoDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
 import com.clearcloud.userservice.model.pojo.UserCount;
 import com.clearcloud.userservice.model.pojo.UserInfo;
-import com.clearcloud.userservice.service.impl.UserCountServiceImpl;
-import com.clearcloud.userservice.service.impl.UserInfoServiceImpl;
+import com.clearcloud.userservice.service.UserCountService;
+import com.clearcloud.userservice.service.UserInfoService;
 import com.clearcloud.userservice.utils.RedisUtil;
 import com.clearcloud.userservice.model.vo.UserInformationVO;
 import io.swagger.annotations.Api;
@@ -35,9 +35,9 @@ public class UserController {
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
-    private UserInfoServiceImpl userInfoService;
+    private UserInfoService userInfoService;
     @Autowired
-    private UserCountServiceImpl userCountService;
+    private UserCountService userCountService;
     @Autowired
     private TransactionTemplate transactionTemplate;
     @ApiOperation("获取用户个人信息接口")

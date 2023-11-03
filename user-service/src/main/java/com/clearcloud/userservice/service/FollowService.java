@@ -1,12 +1,12 @@
-package com.clearcloud.userservice.service.impl;
+package com.clearcloud.userservice.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.userservice.mapper.FollowMapper;
 import com.clearcloud.userservice.model.pojo.Follow;
 import com.clearcloud.userservice.model.pojo.UserCount;
-import com.clearcloud.userservice.service.IFollowService;
 import com.clearcloud.userservice.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2023-11-03
  */
 @Service
-public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> implements IFollowService {
+public class FollowService extends ServiceImpl<FollowMapper, Follow> implements IService<Follow> {
      @Autowired
      private RedisUtil redisUtil;
      @Transactional

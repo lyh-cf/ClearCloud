@@ -42,3 +42,18 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   #给POJO类起别名
   type-aliases-package: com/clearcloud/videoservice/model/pojo
+dubbo:
+  protocol:
+    name: dubbo
+    port: 20883
+  registry:
+    address: spring-cloud://localhost  #使用springcloud中注册中心的地址
+  scan:
+    base-packages: com.clearcloud.videoservice.service
+  #  订阅
+  cloud:
+    subscribed-services: user-service
+  #    关闭启动检查
+  consumer:
+    check: false
+    retries: 0

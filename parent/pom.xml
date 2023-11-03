@@ -14,6 +14,7 @@
         <module>../gateway</module>
         <module>../user-service</module>
         <module>../video-service</module>
+        <module>../dubbo-api</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -29,7 +30,7 @@
         <!--   spring-cloud     -->
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <!--       Nacos     -->
-        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
         <!--    1.18.24不会和mapstruct冲突    -->
         <org.projectlombok.version>1.18.24</org.projectlombok.version>
         <!--    JWT    -->
@@ -177,6 +178,12 @@
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+           <!--     dubbo       -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-dubbo</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
             </dependency>
             <!-- lombok，简化类的构建-->
             <dependency>

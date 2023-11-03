@@ -1,11 +1,10 @@
-package com.clearcloud.userservice.service.impl;
+package com.clearcloud.userservice.service;
 
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.userservice.model.dto.RegisterDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
 import com.clearcloud.userservice.model.pojo.UserCount;
 import com.clearcloud.userservice.model.pojo.UserInfo;
-import com.clearcloud.userservice.service.IAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
@@ -24,16 +23,15 @@ import javax.annotation.Resource;
  */
 @Service
 @Slf4j
-public class IAuthServiceImpl implements IAuthService {
+public class AuthService {
     @Autowired
-    private UserInfoServiceImpl userInfoService;
+    private UserInfoService userInfoService;
     @Autowired
-    private UserCountServiceImpl userCountMapper;
+    private UserCountService userCountMapper;
 
     @Resource(name = "redissonClient")
     private RedissonClient redissonClient;
     @Transactional
-    @Override
     public void registerUserInformation(RegisterDTO registerDTO) {
         //对象转换
         UserInfo userInfo = UserMapstruct.INSTANCT.conver(registerDTO);

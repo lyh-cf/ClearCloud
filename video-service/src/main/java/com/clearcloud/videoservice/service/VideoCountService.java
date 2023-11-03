@@ -1,10 +1,10 @@
-package com.clearcloud.videoservice.service.impl;
+package com.clearcloud.videoservice.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.clearcloud.videoservice.mapper.VideoCountMapper;
 import com.clearcloud.videoservice.model.pojo.VideoCount;
-import com.clearcloud.videoservice.service.IVideoCountService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +16,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-11-02
  */
 @Service
-public class VideoCountServiceImpl extends ServiceImpl<VideoCountMapper, VideoCount> implements IVideoCountService {
+public class VideoCountService extends ServiceImpl<VideoCountMapper, VideoCount> implements IService<VideoCount> {
 
 }
