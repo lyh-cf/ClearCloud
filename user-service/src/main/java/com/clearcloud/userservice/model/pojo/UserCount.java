@@ -50,10 +50,6 @@ public class UserCount implements Serializable {
      */
     private Integer collectCount;
 
-    /**
-     * 作品数
-     */
-    private Integer workCount;
 
     /**
      * 创建时间

@@ -1,8 +1,8 @@
-package com.clearcloud.videoservice.service;
-
+package com.clearcloud.userservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.clearcloud.videoservice.model.pojo.Follow;
+import com.clearcloud.userservice.model.pojo.Follow;
+
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import com.clearcloud.videoservice.model.pojo.Follow;
  * </p>
  *
  * @author lyh
- * @since 2023-11-02
+ * @since 2023-11-03
  */
 public interface IFollowService extends IService<Follow> {
 

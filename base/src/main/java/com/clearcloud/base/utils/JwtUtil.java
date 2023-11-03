@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.UUID;
 public class JwtUtil {
     //过期时间
-    private static final long access_expire = 60 * 60 * 1000;
-    private static final long refresh_expire = 2  * 60 * 60 * 1000;
+    private static final long access_expire = 24*60 * 60 * 1000;
+    private static final long refresh_expire = 2 *24 * 60 * 60 * 1000;
     //秘钥
     private static final String secret = "lyh_wj_pp";
 

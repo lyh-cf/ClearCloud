@@ -1,7 +1,7 @@
-package com.clearcloud.videoservice.mapper;
+package com.clearcloud.userservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.clearcloud.videoservice.model.pojo.Follow;
+import com.clearcloud.userservice.model.pojo.Follow;
 
 
 /**
@@ -10,7 +10,7 @@ import com.clearcloud.videoservice.model.pojo.Follow;
  * </p>
  *
  * @author lyh
- * @since 2023-11-02
+ * @since 2023-11-03
  */
 public interface FollowMapper extends BaseMapper<Follow> {
 
