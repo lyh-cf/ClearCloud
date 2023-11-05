@@ -9,12 +9,26 @@
         <!--    必须要添加，不然maven插件运行会报错！    -->
         <relativePath>../parent</relativePath> <!-- lookup parent from repository -->
     </parent>
-    <artifactId>dubbo-api</artifactId>
+    <artifactId>feign-api</artifactId>
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
-
+        <!--Open feign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--   负载均衡     -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <!--okhttp连接池-->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

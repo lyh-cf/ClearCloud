@@ -4,10 +4,12 @@ package com.clearcloud.videoservice.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clearcloud.base.model.RedisConstants;
+import com.clearcloud.videoservice.config.QiNiuConfig;
 import com.clearcloud.videoservice.mapper.VideoInfoMapper;
 import com.clearcloud.videoservice.mapstruct.VideoMapstruct;
 import com.clearcloud.videoservice.model.pojo.VideoCount;
 import com.clearcloud.videoservice.model.pojo.VideoInfo;
+import com.clearcloud.videoservice.model.vo.AuthorVO;
 import com.clearcloud.videoservice.model.vo.VideoStreamVO;
 import com.clearcloud.videoservice.utils.QiNiuUtil;
 import com.clearcloud.videoservice.model.vo.UploadVideoVO;
@@ -36,6 +38,8 @@ import java.util.*;
 public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  implements IService<VideoInfo> {
     @Autowired
     private QiNiuUtil qiNiuUtil;
+    @Autowired
+    private QiNiuConfig qiNiuConfig;
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Resource(name = "redissonClient")
@@ -58,7 +62,7 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return new UploadVideoVO(videoKey,pageKey);
+        return new UploadVideoVO(qiNiuConfig.getHostName()+videoKey,qiNiuConfig.getHostName()+pageKey);
     }
     //给游客推视频
     public List<VideoStreamVO>pushVideoForVisitor(){
@@ -94,7 +98,13 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
         List<VideoStreamVO>videoStreamVOList=new ArrayList<>();
         videosInfo.forEach(videoInfo -> {
             VideoCount videoCount=(VideoCount)redisTemplate.opsForValue().get(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoInfo.getPkVideoId());
-            videoStreamVOList.add(VideoMapstruct.INSTANCT.conver(videoInfo,videoCount));
+            VideoStreamVO videoStreamVO = VideoMapstruct.INSTANCT.conver(videoInfo, videoCount);
+            AuthorVO authorVO=new AuthorVO();
+            authorVO.setPkUserId(54);
+            authorVO.setAvatar("http://s32vad0na.bkt.clouddn.com/default_avatar.jpeg");
+            authorVO.setNickName("清云-user");
+            videoStreamVO.setAuthorVO(authorVO);
+            videoStreamVOList.add(videoStreamVO);
         });
         return videoStreamVOList;
     }

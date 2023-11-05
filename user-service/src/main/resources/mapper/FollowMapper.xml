@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.clearcloud.userservice.mapper.FollowMapper">
 
+    <select id="batchQueryFansInfo" resultType="com.clearcloud.userservice.model.pojo.UserInfo">
+        select pk_user_id, user_email, nick_name, avatar, signature
+        from user_info
+        where pk_user_id in (select follow_id from follow where user_id = #{userId} limit #{offset}
+            , #{rows})
+    </select>
 </mapper>

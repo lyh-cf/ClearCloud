@@ -1,16 +1,20 @@
 package com.clearcloud.userservice.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.userservice.model.dto.UserSelfInfoDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
+import com.clearcloud.userservice.model.pojo.Collect;
+import com.clearcloud.userservice.model.pojo.Follow;
 import com.clearcloud.userservice.model.pojo.UserCount;
 import com.clearcloud.userservice.model.pojo.UserInfo;
+import com.clearcloud.userservice.service.CollectService;
 import com.clearcloud.userservice.service.UserCountService;
 import com.clearcloud.userservice.service.UserInfoService;
-import com.clearcloud.userservice.utils.RedisUtil;
 import com.clearcloud.userservice.model.vo.UserInformationVO;
+import com.clearcloud.userservice.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,8 @@ public class UserController {
     private UserCountService userCountService;
     @Autowired
     private TransactionTemplate transactionTemplate;
+    @Autowired
+    private CollectService collectService;
     @ApiOperation("获取用户个人信息接口")
     @GetMapping("/getUserInformation")
     public BaseResponse<?> getUserInformation(HttpServletRequest httpServletRequest) {
@@ -114,5 +120,37 @@ public class UserController {
         });
         return BaseResponse.success();
     }
-
+    @ApiOperation("增加获赞接口")
+    @GetMapping("/addLikedCount")
+    public BaseResponse<?> addLikedCount(@RequestParam("userId") Integer userId) {
+        UserCount userCount=(UserCount) redisUtil.get(RedisConstants.USER_COUNT_KEY_PREFIX+userId);
+        userCount.setLikedCount(userCount.getLikedCount()+1);
+        redisUtil.set(RedisConstants.USER_COUNT_KEY_PREFIX + userId,userCount);
+        return BaseResponse.success();
+    }
+    @ApiOperation("增加获赞接口")
+    @GetMapping("/reduceLikedCount")
+    public BaseResponse<?> reduceLikedCount(@RequestParam("userId") Integer userId) {
+        UserCount userCount=(UserCount) redisUtil.get(RedisConstants.USER_COUNT_KEY_PREFIX+userId);
+        userCount.setLikedCount(userCount.getLikedCount()-1);
+        redisUtil.set(RedisConstants.USER_COUNT_KEY_PREFIX + userId,userCount);
+        return BaseResponse.success();
+    }
+    @ApiOperation("添加收藏接口")
+    @GetMapping("/collectVideo")
+    public BaseResponse<?> collectVideo(@RequestParam("userId") Integer userId,@RequestParam("videoId") Integer videoId) {
+        Collect collect=new Collect();
+        collect.setUserId(userId);
+        collect.setVideoId(videoId);
+        collectService.save(collect);
+        return BaseResponse.success();
+    }
+    @ApiOperation("取消收藏接口")
+    @GetMapping("/cancelCollectVideo")
+    public BaseResponse<?> cancelCollectVideo(@RequestParam("userId") Integer userId,@RequestParam("videoId") Integer videoId) {
+        LambdaUpdateWrapper<Collect> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper.eq(Collect::getUserId, userId).eq(Collect::getVideoId, videoId);
+        collectService.remove(lambdaUpdateWrapper);
+        return BaseResponse.success();
+    }
 }

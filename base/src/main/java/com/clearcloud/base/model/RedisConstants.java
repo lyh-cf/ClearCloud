@@ -10,13 +10,14 @@ package com.clearcloud.base.model;
 public class RedisConstants {
     //用户信息
     public static final String USER_INFO_KEY_PREFIX="ClearCloud:UserInfo:";
-    public static final String USER_COUNT_KEY_PREFIX="ClearCloud:UserCount:";
+
     public static final int USER_INFORMATION_TTL=60*60*24;//单位s
+    public static final String USER_COUNT_KEY_PREFIX="ClearCloud:UserCount:";
     public static final String FOLLOW_KEY_PREFIX="ClearCloud:Follow:";
-    public static final String FAN_KEY_PREFIX="ClearCloud:Fan:";
+//    public static final String FAN_KEY_PREFIX="ClearCloud:Fan:";
     public static final String LIKE_KEY_PREFIX="ClearCloud:Like:";
 //    public static final int LIKE_KEY_TTL=60*60*24;
-    public static final String COLLECT_KEY_PREFIX="ClearCloud:Collect:";
+//    public static final String COLLECT_KEY_PREFIX="ClearCloud:Collect:";
 //    public static final int COLLECT_KEY_TTL=60*60*24;
     //视频信息
     public static final String ALL_PUBLISHED_VIDEO_KEY="ClearCloud:PublishedVideo";

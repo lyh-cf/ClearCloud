@@ -1,14 +1,15 @@
 package com.clearcloud.videoservice.utils;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -16,7 +17,6 @@ public final class RedisUtil {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
     // =============================common============================
-
     /**
      * 指定缓存失效时间
      *
@@ -569,5 +569,45 @@ public final class RedisUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+    public Map<String, Object> batchGet(Set<String>keys){
+        //这里获取String类型的序列化器
+        RedisSerializer<String> stringSerializer = redisTemplate.getStringSerializer();
+        //第二个参数是指定结果反序列化器，用于反序列化管道中读到的数据，不是必传，
+        //如果不传，则使用自定义RedisTemplate的配置，
+        //如果没有自定义，则使用RedisTemplate默认的配置（JDK反序列化）
+        Map<String, Object> result = new HashMap<>();
+        redisTemplate.executePipelined(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                for(String key:keys){
+                    byte[] keyBytes = key.getBytes();
+                    // 检查键是否存在
+                    Boolean keyExists = connection.exists(keyBytes);
+                    if (keyExists != null && keyExists) {
+                        byte[] valueBytes = connection.get(keyBytes);
+                        // 使用反序列化器将字节数组转换为对象
+                        Object value = stringSerializer.deserialize(valueBytes);
+                        // 将键值对存入结果 Map
+                        result.put(key, value);
+                    }
+                }
+                //这里bytes只会获取到null，因为这里get操作只是放在管道里面，并没有
+                //真正执行，所以获取不到值
+                //byte[] bytes = connection.get("test:1".getBytes());
+                //executePipelined 这个方法需要返回值为null，不然会抛异常，
+                //这一点可以查看executePipelined源码
+                return null;
+            }
+        }, stringSerializer);
+        return result;
+    }
+    public void batchSet(Map<String, ?> data){
+        redisTemplate.executePipelined((RedisConnection connection) -> {
+            data.forEach((key, value) -> {
+                redisTemplate.opsForValue().set(key, value);
+            });
+            return null;
+        });
     }
 }

@@ -5,7 +5,6 @@ import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.videoservice.model.vo.VideoStreamVO;
 import com.clearcloud.videoservice.service.LikeService;
-import com.clearcloud.videoservice.service.VideoCountService;
 import com.clearcloud.videoservice.service.VideoInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +12,6 @@ import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +36,7 @@ public class VideoController {
     @Resource(name = "redissonClient")
     private RedissonClient redissonClient;
     @ApiOperation("获取视频流接口")
-    @PostMapping("/getVideoStream")
+    @GetMapping("/getVideoStream")
     public BaseResponse<?> getVideoStream(HttpServletRequest httpServletRequest) {
         Integer userId=JwtUtil.getUserId(httpServletRequest);
         //是未登录的用户
@@ -74,10 +72,24 @@ public class VideoController {
         return BaseResponse.success();
     }
     @ApiOperation("取消点赞接口")
-    @GetMapping("/likeVideo")
+    @GetMapping("/cancelLikeVideo")
     public BaseResponse<?> cancelLikeVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
         Integer userId=JwtUtil.getUserId(httpServletRequest);
         likeService.cancelLikeVideo(userId,videoId);
+        return BaseResponse.success();
+    }
+    @ApiOperation("收藏接口")
+    @GetMapping("/collectVideo")
+    public BaseResponse<?> collectVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
+        Integer userId=JwtUtil.getUserId(httpServletRequest);
+
+        return BaseResponse.success();
+    }
+    @ApiOperation("取消收藏接口")
+    @GetMapping("/cancelCollectVideo")
+    public BaseResponse<?> cancelCollectVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
+        Integer userId=JwtUtil.getUserId(httpServletRequest);
+
         return BaseResponse.success();
     }
 }

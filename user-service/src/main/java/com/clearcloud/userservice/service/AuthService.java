@@ -27,7 +27,7 @@ public class AuthService {
     @Autowired
     private UserInfoService userInfoService;
     @Autowired
-    private UserCountService userCountMapper;
+    private UserCountService userCountService;
 
     @Resource(name = "redissonClient")
     private RedissonClient redissonClient;
@@ -38,7 +38,7 @@ public class AuthService {
         userInfoService.save(userInfo);//userInfo会保存插入的userId
         UserCount userCount=new UserCount();
         userCount.setPkUserId(userInfo.getPkUserId());
-        userCountMapper.save(userCount);
+        userCountService.save(userCount);
         //给每个用户注册一个bloom过滤器
         RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter(RedisConstants.USER_BLOOM_FILTER_KEY_PREFIX+userInfo.getPkUserId());
         //初始化，容量1000，错误率千分之三

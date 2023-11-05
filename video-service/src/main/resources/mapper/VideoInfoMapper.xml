@@ -3,8 +3,8 @@
 <mapper namespace="com.clearcloud.videoservice.mapper.VideoInfoMapper">
 
     <select id="getRecordsByIds" resultType="com.clearcloud.videoservice.model.pojo.VideoInfo">
-        SELECT * FROM your_table
-        WHERE id IN
+        SELECT pk_video_id,user_id,`type`,video_description,video_cover,play_url,create_time FROM video_info
+        WHERE pk_video_id IN
         <foreach item="item" collection="videoIds" open="(" separator="," close=")">
             #{item}
         </foreach>

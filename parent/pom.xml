@@ -14,7 +14,7 @@
         <module>../gateway</module>
         <module>../user-service</module>
         <module>../video-service</module>
-        <module>../dubbo-api</module>
+        <module>../feign-api</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -58,15 +58,30 @@
         <org.redisson.version>3.14.1</org.redisson.version>
         <!--  七牛云      -->
         <com.qiniu.version>7.13.1</com.qiniu.version>
+        <com.google.code.gson.version>2.8.9</com.google.code.gson.version>
+        <!--   dubbo     -->
+        <spring-cloud-starter-dubbo.version>2.2.7.RELEASE</spring-cloud-starter-dubbo.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- dubbo -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-dubbo</artifactId>
+                <version>${spring-cloud-starter-dubbo.version}</version>
+            </dependency>
             <!--  七牛云      -->
             <dependency>
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>${com.qiniu.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${com.google.code.gson.version}</version>
+                <scope>compile</scope>
             </dependency>
             <!--    redis序列化器    -->
             <dependency>
@@ -178,12 +193,6 @@
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-           <!--     dubbo       -->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-dubbo</artifactId>
-                <version>${spring-cloud-alibaba.version}</version>
             </dependency>
             <!-- lombok，简化类的构建-->
             <dependency>

@@ -1,4 +1,4 @@
-package com.clearcloud.videoservice.model.pojo;
+package com.clearcloud.userservice.model.pojo;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -16,46 +16,37 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author lyh
- * @since 2023-11-02
+ * @since 2023-11-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class VideoCount implements Serializable {
+public class Collect implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * VideoId
-     */
-    @TableId(value = "pk_video_id", type = IdType.AUTO)
-    private Integer pkVideoId;
+    @TableId(value = "pk_id", type = IdType.AUTO)
+    private Integer pkId;
 
     /**
-     * 获赞数
+     * userId
      */
-    private Integer likedCount;
+    private Integer userId;
 
     /**
-     * 评论数
+     * videoId
      */
-    private Integer commentedCount;
+    private Integer videoId;
 
     /**
-     * 收藏数
+     * authorId
      */
-    private Integer collectedCount;
+    private Integer authorId;
 
     /**
      * 创建时间
      */
     @TableField(value = "create_time",fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField(value = "update_time",fill = FieldFill.UPDATE)
-    private LocalDateTime updateTime;
 
 
 }

@@ -24,20 +24,15 @@
             <artifactId>base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.clearcloud</groupId>
-            <artifactId>dubbo-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <!--     dubbo       -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-dubbo</artifactId>
-        </dependency>
         <!--  七牛云      -->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <scope>compile</scope>
         </dependency>
         <!--   redis     -->
         <dependency>

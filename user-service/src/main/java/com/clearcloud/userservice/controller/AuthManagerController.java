@@ -6,8 +6,10 @@ import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.userservice.model.dto.LoginDTO;
 import com.clearcloud.userservice.model.dto.RegisterDTO;
 import com.clearcloud.userservice.mapstruct.UserMapstruct;
+import com.clearcloud.userservice.model.pojo.UserCount;
 import com.clearcloud.userservice.model.pojo.UserInfo;
 import com.clearcloud.userservice.service.AuthService;
+import com.clearcloud.userservice.service.UserCountService;
 import com.clearcloud.userservice.service.UserInfoService;
 import com.clearcloud.userservice.utils.RedisUtil;
 import com.clearcloud.userservice.utils.SM3Util;
@@ -39,6 +41,8 @@ public class AuthManagerController {
     @Autowired
     private AuthService authService;
     @Autowired
+    private UserCountService userCountService;
+    @Autowired
     private RedisUtil redisUtil;
     @ApiOperation("登录认证")
     @PostMapping("/login")
@@ -54,6 +58,8 @@ public class AuthManagerController {
         key为：业务前缀+id 可以防止big-key问题
         */
         redisUtil.set(RedisConstants.USER_INFO_KEY_PREFIX+userInfo.getPkUserId(),userInfo,RedisConstants.USER_INFORMATION_TTL);
+        UserCount userCount=userCountService.getById(userInfo.getPkUserId());
+        redisUtil.set(RedisConstants.USER_COUNT_KEY_PREFIX+userInfo.getPkUserId(),userCount);
         return BaseResponse.success(loginVO);
     }
     @PostMapping("/register")

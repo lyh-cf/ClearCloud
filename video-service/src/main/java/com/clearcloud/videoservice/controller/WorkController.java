@@ -58,12 +58,16 @@ public class WorkController {
                     videoInfoService.save(videoInfo);
                     VideoCount videoCount=new VideoCount();
                     videoCount.setPkVideoId(videoInfo.getPkVideoId());
+                    videoCount.setCommentedCount(0);
+                    videoCount.setLikedCount(0);
+                    videoCount.setCollectedCount(0);
                     videoCountService.save(videoCount);
                     //再存缓存
                     redisTemplate.opsForZSet().add(RedisConstants.ALL_PUBLISHED_VIDEO_KEY,videoInfo.getPkVideoId(),System.currentTimeMillis());
                     //todo
                     redisTemplate.opsForValue().set(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoCount.getPkVideoId(), videoCount);
                 } catch (Exception e){
+                    e.printStackTrace();
                     //回滚
                     transactionStatus.setRollbackOnly();
                 }
