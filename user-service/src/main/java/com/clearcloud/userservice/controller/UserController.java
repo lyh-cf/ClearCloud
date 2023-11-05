@@ -120,7 +120,7 @@ public class UserController {
         });
         return BaseResponse.success();
     }
-    @ApiOperation("增加获赞接口")
+    @ApiOperation("增加获赞接口,用于feign接口调用")
     @GetMapping("/addLikedCount")
     public BaseResponse<?> addLikedCount(@RequestParam("userId") Integer userId) {
         UserCount userCount=(UserCount) redisUtil.get(RedisConstants.USER_COUNT_KEY_PREFIX+userId);
@@ -128,7 +128,7 @@ public class UserController {
         redisUtil.set(RedisConstants.USER_COUNT_KEY_PREFIX + userId,userCount);
         return BaseResponse.success();
     }
-    @ApiOperation("增加获赞接口")
+    @ApiOperation("增加获赞接口,用于feign接口调用")
     @GetMapping("/reduceLikedCount")
     public BaseResponse<?> reduceLikedCount(@RequestParam("userId") Integer userId) {
         UserCount userCount=(UserCount) redisUtil.get(RedisConstants.USER_COUNT_KEY_PREFIX+userId);
@@ -136,7 +136,7 @@ public class UserController {
         redisUtil.set(RedisConstants.USER_COUNT_KEY_PREFIX + userId,userCount);
         return BaseResponse.success();
     }
-    @ApiOperation("添加收藏接口")
+    @ApiOperation("添加收藏接口,用于feign接口调用")
     @GetMapping("/collectVideo")
     public BaseResponse<?> collectVideo(@RequestParam("userId") Integer userId,@RequestParam("videoId") Integer videoId) {
         Collect collect=new Collect();
@@ -145,7 +145,7 @@ public class UserController {
         collectService.save(collect);
         return BaseResponse.success();
     }
-    @ApiOperation("取消收藏接口")
+    @ApiOperation("取消收藏接口,用于feign接口调用")
     @GetMapping("/cancelCollectVideo")
     public BaseResponse<?> cancelCollectVideo(@RequestParam("userId") Integer userId,@RequestParam("videoId") Integer videoId) {
         LambdaUpdateWrapper<Collect> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();

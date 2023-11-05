@@ -1,10 +1,12 @@
 package com.clearcloud.videoservice.controller;
 
+import com.clearcloud.api.UserServiceClient;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
 import com.clearcloud.videoservice.model.vo.VideoStreamVO;
 import com.clearcloud.videoservice.service.LikeService;
+import com.clearcloud.videoservice.service.VideoCountService;
 import com.clearcloud.videoservice.service.VideoInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +37,8 @@ public class VideoController {
     private LikeService likeService;
     @Resource(name = "redissonClient")
     private RedissonClient redissonClient;
+    @Autowired
+    private VideoCountService videoCountService;
     @ApiOperation("获取视频流接口")
     @GetMapping("/getVideoStream")
     public BaseResponse<?> getVideoStream(HttpServletRequest httpServletRequest) {
@@ -82,14 +86,14 @@ public class VideoController {
     @GetMapping("/collectVideo")
     public BaseResponse<?> collectVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
         Integer userId=JwtUtil.getUserId(httpServletRequest);
-
+        videoCountService.collectVideo(userId,videoId);
         return BaseResponse.success();
     }
     @ApiOperation("取消收藏接口")
     @GetMapping("/cancelCollectVideo")
-    public BaseResponse<?> cancelCollectVideo(HttpServletRequest httpServletRequest, @RequestParam Integer videoId) {
+    public BaseResponse<?> cancelCollectVideo(HttpServletRequest httpServletRequest, @RequestParam("videoId") Integer videoId) {
         Integer userId=JwtUtil.getUserId(httpServletRequest);
-
+        videoCountService.cancelCollectVideo(userId,videoId);
         return BaseResponse.success();
     }
 }

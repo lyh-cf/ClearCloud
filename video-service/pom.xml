@@ -21,12 +21,12 @@
     <dependencies>
         <dependency>
             <groupId>com.clearcloud</groupId>
-            <artifactId>base</artifactId>
+            <artifactId>feign-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.clearcloud</groupId>
-            <artifactId>feign-api</artifactId>
+            <artifactId>base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--  七牛云      -->

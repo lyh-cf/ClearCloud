@@ -21,5 +21,4 @@ public class UserInformationVO implements Serializable {
     private Integer followCount;
     private Integer fanCount;
     private Integer likedCount;
-    private Integer collectCount;
 }

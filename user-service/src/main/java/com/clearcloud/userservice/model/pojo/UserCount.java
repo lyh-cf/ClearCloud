@@ -46,12 +46,6 @@ public class UserCount implements Serializable {
     private Integer likedCount;
 
     /**
-     * 收藏数
-     */
-    private Integer collectCount;
-
-
-    /**
      * 创建时间
      */
     @TableField(value = "create_time",fill = FieldFill.INSERT)
