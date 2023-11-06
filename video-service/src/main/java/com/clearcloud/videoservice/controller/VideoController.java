@@ -1,10 +1,9 @@
 package com.clearcloud.videoservice.controller;
 
-import com.clearcloud.api.UserServiceClient;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
-import com.clearcloud.videoservice.model.vo.VideoStreamVO;
+import com.clearcloud.model.VideoStreamVO;
 import com.clearcloud.videoservice.service.LikeService;
 import com.clearcloud.videoservice.service.VideoCountService;
 import com.clearcloud.videoservice.service.VideoInfoService;
@@ -41,19 +40,19 @@ public class VideoController {
     private VideoCountService videoCountService;
     @ApiOperation("获取视频流接口")
     @GetMapping("/getVideoStream")
-    public BaseResponse<?> getVideoStream(HttpServletRequest httpServletRequest) {
+    public BaseResponse<?> getVideoStream(HttpServletRequest httpServletRequest,@RequestParam(value = "type")String type) {
         Integer userId=JwtUtil.getUserId(httpServletRequest);
         //是未登录的用户
         if(userId==null){
-            List<VideoStreamVO> videoStreamVOList = videoInfoService.pushVideoForVisitor();
+            List<VideoStreamVO> videoStreamVOList = videoInfoService.pushVideoForVisitor(type);
             if(videoStreamVOList==null)return BaseResponse.error("暂无视频获取");
             return BaseResponse.success(videoStreamVOList);
         }
         //已登录的用户
         else{
-            List<VideoStreamVO> videoStreamVOList = videoInfoService.pushVideoForUser(userId);
+            List<VideoStreamVO> videoStreamVOList = videoInfoService.pushVideoForUser(userId,type);
             if(videoStreamVOList==null){
-                videoStreamVOList = videoInfoService.pushVideoForVisitor();
+                videoStreamVOList = videoInfoService.pushVideoForVisitor(type);
                 if(videoStreamVOList==null)return BaseResponse.error("暂无视频获取");
                 return BaseResponse.success(videoStreamVOList);
             };

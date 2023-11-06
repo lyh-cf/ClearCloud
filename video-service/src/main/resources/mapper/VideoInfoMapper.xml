@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.clearcloud.videoservice.mapper.VideoInfoMapper">
-
     <select id="getRecordsByIds" resultType="com.clearcloud.videoservice.model.pojo.VideoInfo">
         SELECT pk_video_id,user_id,`type`,video_description,video_cover,play_url,create_time FROM video_info
         WHERE pk_video_id IN
         <foreach item="item" collection="videoIds" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+    <select id="getRecordsByIdsAndType" resultType="com.clearcloud.videoservice.model.pojo.VideoInfo">
+        SELECT pk_video_id,user_id,`type`,video_description,video_cover,play_url,create_time FROM video_info
+        WHERE pk_video_id IN
+        <foreach item="item" collection="videoIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and `type`=#{type}
+    </select>
+    <select id="getSelfWorks" resultType="com.clearcloud.videoservice.model.pojo.VideoInfo">
+        select pk_video_id,user_id,`type`,video_description,video_cover,play_url,create_time from video_info
+        where user_id =#{userId}
     </select>
 </mapper>

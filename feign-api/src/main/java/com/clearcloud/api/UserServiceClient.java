@@ -1,8 +1,11 @@
 package com.clearcloud.api;
 
+import com.clearcloud.model.AuthorVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /*
  *@title UserService
@@ -21,4 +24,7 @@ public interface UserServiceClient {
     void collectVideo(@RequestParam("userId") Integer userId,@RequestParam("videoId") Integer videoId);
     @GetMapping("/cancelCollectVideo")
     void cancelCollectVideo(@RequestParam("userId") Integer userId,@RequestParam("videoId") Integer videoId);
+
+    @GetMapping("/getAuthorVO")
+    List<AuthorVO> getAuthorVO(@RequestParam("userId") Integer userId, @RequestParam("videoIdList") List<Integer> videoIdList, @RequestParam("authorIdList") List<Integer> authorIdList);
 }

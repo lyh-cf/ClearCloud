@@ -1,8 +1,8 @@
 package com.clearcloud.videoservice.mapstruct;
 
+import com.clearcloud.model.VideoStreamVO;
 import com.clearcloud.videoservice.model.pojo.VideoCount;
 import com.clearcloud.videoservice.model.pojo.VideoInfo;
-import com.clearcloud.videoservice.model.vo.VideoStreamVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

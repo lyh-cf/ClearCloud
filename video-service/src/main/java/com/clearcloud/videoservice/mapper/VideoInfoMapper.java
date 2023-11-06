@@ -18,4 +18,7 @@ import java.util.Set;
  */
 public interface VideoInfoMapper extends BaseMapper<VideoInfo> {
     List<VideoInfo> getRecordsByIds(@Param("videoIds") Set<Integer> videoIds);
+    List<VideoInfo> getRecordsByIdsAndType(@Param("videoIds") Set<Integer> videoIds,@Param("type")String type);
+
+    List<VideoInfo>getSelfWorks(@Param("userId")Integer userId);
 }

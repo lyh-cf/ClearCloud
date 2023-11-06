@@ -1,5 +1,6 @@
 package com.clearcloud.userservice.mapstruct;
 
+import com.clearcloud.model.AuthorVO;
 import com.clearcloud.userservice.model.dto.RegisterDTO;
 import com.clearcloud.userservice.model.dto.UserSelfInfoDTO;
 import com.clearcloud.userservice.model.pojo.UserCount;
@@ -36,4 +37,6 @@ public interface UserMapstruct {
     UserInfo conver(UserSelfInfoDTO userSelfInfoDTO);
 
     BasicUserInfoVO converToBasicUserInfoVO(UserInfo userInfo);
+
+    AuthorVO converToAuthorVO(UserInfo userInfo);
 }

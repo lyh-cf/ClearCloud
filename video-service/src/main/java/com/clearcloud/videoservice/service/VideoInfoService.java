@@ -3,14 +3,16 @@ package com.clearcloud.videoservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.clearcloud.api.UserServiceClient;
 import com.clearcloud.base.model.RedisConstants;
+import com.clearcloud.base.model.SystemConstans;
+import com.clearcloud.model.AuthorVO;
+import com.clearcloud.model.VideoStreamVO;
 import com.clearcloud.videoservice.config.QiNiuConfig;
 import com.clearcloud.videoservice.mapper.VideoInfoMapper;
 import com.clearcloud.videoservice.mapstruct.VideoMapstruct;
 import com.clearcloud.videoservice.model.pojo.VideoCount;
 import com.clearcloud.videoservice.model.pojo.VideoInfo;
-import com.clearcloud.videoservice.model.vo.AuthorVO;
-import com.clearcloud.videoservice.model.vo.VideoStreamVO;
 import com.clearcloud.videoservice.utils.QiNiuUtil;
 import com.clearcloud.videoservice.model.vo.UploadVideoVO;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -46,6 +49,8 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
     private RedissonClient redissonClient;
     @Resource
     private VideoInfoMapper videoInfoMapper;
+    @Autowired
+    private UserServiceClient userServiceClient;
     public UploadVideoVO uploadVideo(MultipartFile file, Integer userId) {
         //获取原始文件名
         String originalFilename = file.getOriginalFilename();
@@ -65,10 +70,10 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
         return new UploadVideoVO(qiNiuConfig.getHostName()+videoKey,qiNiuConfig.getHostName()+pageKey);
     }
     //给游客推视频
-    public List<VideoStreamVO>pushVideoForVisitor(){
-        return getVideoStreamVOS(getVideoIdSet());
+    public List<VideoStreamVO>pushVideoForVisitor(String type){
+        return getVideoStreamVOS(null,getVideoIdSet(),type);
     }
-    public List<VideoStreamVO>pushVideoForUser(Integer userId){
+    public List<VideoStreamVO>pushVideoForUser(Integer userId,String type){
         Set<Integer> videoIdSet = getVideoIdSet();
         //过滤看过的视频
         RBloomFilter<Integer> bloomFilter = redissonClient.getBloomFilter(RedisConstants.USER_BLOOM_FILTER_KEY_PREFIX + userId);
@@ -76,11 +81,13 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
         while (iterator.hasNext()) {
             if(bloomFilter.contains(iterator.next()))iterator.remove();
         }
-        return getVideoStreamVOS(videoIdSet);
+        return getVideoStreamVOS(userId,videoIdSet,type);
     }
+    //获取系统发布的所有的视频id
     private Set<Integer>getVideoIdSet(){
         //返回与RedisTemplate中定义的值类型(V)相同的值
-        Set<Object> objectSet =redisTemplate.opsForZSet().reverseRange(RedisConstants.ALL_PUBLISHED_VIDEO_KEY, 0, RedisConstants.ONCE_PUSH_VIDEO_NUMBER - 1);
+        //todo 全部获取
+        Set<Object> objectSet =redisTemplate.opsForZSet().reverseRange(RedisConstants.ALL_PUBLISHED_VIDEO_KEY, 0, -1);
         if(objectSet==null) return null;
         Set<Integer> videoIds = new HashSet<>();
         for (Object obj : objectSet) {
@@ -92,20 +99,24 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
         }
         return videoIds;
     }
-
-    private List<VideoStreamVO> getVideoStreamVOS(Set<Integer> videoIds) {
-        List<VideoInfo> videosInfo= videoInfoMapper.getRecordsByIds(videoIds);
+    private List<VideoStreamVO> getVideoStreamVOS(Integer userId,Set<Integer> videoIds,String type) {
+        List<VideoInfo> videosInfo;
+        if(SystemConstans.VIDEO_TYPE_RECOMMEND.equals(type)||SystemConstans.VIDEO_TYPE_POPULAR.equals(type)||SystemConstans.VIDEO_TYPE_FOLLOW.equals(type))videosInfo=videoInfoMapper.getRecordsByIds(videoIds);
+        else videosInfo=videoInfoMapper.getRecordsByIdsAndType(videoIds,type);
         List<VideoStreamVO>videoStreamVOList=new ArrayList<>();
-        videosInfo.forEach(videoInfo -> {
-            VideoCount videoCount=(VideoCount)redisTemplate.opsForValue().get(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoInfo.getPkVideoId());
-            VideoStreamVO videoStreamVO = VideoMapstruct.INSTANCT.conver(videoInfo, videoCount);
-            AuthorVO authorVO=new AuthorVO();
-            authorVO.setPkUserId(54);
-            authorVO.setAvatar("http://s32vad0na.bkt.clouddn.com/default_avatar.jpeg");
-            authorVO.setNickName("清云-user");
-            videoStreamVO.setAuthorVO(authorVO);
+        List<Integer> pkVideoIdList = videosInfo.stream()
+                .map(VideoInfo::getPkVideoId)
+                .toList();
+        List<Integer> authorIdList = videosInfo.stream()
+                .map(VideoInfo::getUserId)
+                .toList();
+        List<AuthorVO> authorVOList = userServiceClient.getAuthorVO(userId, pkVideoIdList, authorIdList);
+        for(int i=0;i<videosInfo.size();i++){
+            VideoCount videoCount=(VideoCount)redisTemplate.opsForValue().get(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videosInfo.get(i).getPkVideoId());
+            VideoStreamVO videoStreamVO = VideoMapstruct.INSTANCT.conver(videosInfo.get(i), videoCount);
+            videoStreamVO.setAuthorVO(authorVOList.get(i));
             videoStreamVOList.add(videoStreamVO);
-        });
+        }
         return videoStreamVOList;
     }
 }

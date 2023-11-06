@@ -1,4 +1,4 @@
-package com.clearcloud.videoservice.model.vo;
+package com.clearcloud.model;
 
 import lombok.Data;
 
@@ -23,7 +23,5 @@ public class VideoStreamVO implements Serializable {
     private Integer likedCount;//点赞数
     private Integer commentedCount;//评论数
     private Integer collectedCount;//收藏数
-    private boolean isLike;//该用户是否点赞
-    private boolean isCollect;//该用户是否收藏
     private LocalDateTime createTime;//发布时间
 }

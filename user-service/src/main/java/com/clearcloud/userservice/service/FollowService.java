@@ -52,7 +52,7 @@ public class FollowService extends ServiceImpl<FollowMapper, Follow> implements 
         follow.setFollowId(targetUserId);
         save(follow);
         //再写缓存
-        redisUtil.sSet(RedisConstants.FOLLOW_KEY_PREFIX + userId, targetUserId);
+        redisTemplate.opsForZSet().add(RedisConstants.FOLLOW_KEY_PREFIX + userId,targetUserId,System.currentTimeMillis());
         //修改用户统计信息
         UserCount targetUserCount = (UserCount) redisUtil.get(RedisConstants.USER_COUNT_KEY_PREFIX + targetUserId);
         targetUserCount.setFanCount(targetUserCount.getFanCount() + 1);
@@ -69,7 +69,7 @@ public class FollowService extends ServiceImpl<FollowMapper, Follow> implements 
         lambdaUpdateWrapper.eq(Follow::getUserId, userId).eq(Follow::getFollowId, targetUserId);
         remove(lambdaUpdateWrapper);
         //再写缓存
-        redisUtil.setRemove(RedisConstants.FOLLOW_KEY_PREFIX + userId, targetUserId);
+        redisTemplate.opsForZSet().remove(RedisConstants.FOLLOW_KEY_PREFIX + userId,targetUserId);
         //修改用户统计信息
         UserCount targetUserCount = (UserCount) redisUtil.get(RedisConstants.USER_COUNT_KEY_PREFIX + targetUserId);
         targetUserCount.setFanCount(targetUserCount.getFanCount() - 1);
@@ -115,15 +115,19 @@ public class FollowService extends ServiceImpl<FollowMapper, Follow> implements 
             }
         }
         //5.将没有命中缓存的UserInfo从数据库中批量查出来，并批量加载到缓存中
-        List<UserInfo> noHitUserInfoList = userInfoMapper.batchQueryUserInfo(noHitIdList);
-        Map<String, UserInfo> noHitUserInfoMap =
-                noHitUserInfoList.stream()
-                        .collect(
-                                Collectors.toMap(userInfo -> RedisConstants.USER_INFO_KEY_PREFIX+userInfo.getPkUserId(), Function.identity())
-                        );
-        redisUtil.batchSet(noHitUserInfoMap);
+        //需要做判空处理
+        if(noHitIdList.size()>0){
+            List<UserInfo> noHitUserInfoList = userInfoMapper.batchQueryUserInfo(noHitIdList);
+            Map<String, UserInfo> noHitUserInfoMap =
+                    noHitUserInfoList.stream()
+                            .collect(
+                                    Collectors.toMap(userInfo -> RedisConstants.USER_INFO_KEY_PREFIX+userInfo.getPkUserId(), Function.identity())
+                            );
+            redisUtil.batchSet(noHitUserInfoMap);
+            //合并
+            cachedUserInfoList.putAll(noHitUserInfoMap);
+        }
         //6.组装对象列表
-        cachedUserInfoList.putAll(noHitUserInfoMap);
         cachedUserInfoList.forEach((key, value) -> {
             if (value instanceof UserInfo) {
                 basicUserInfoVOList.add(UserMapstruct.INSTANCT.converToBasicUserInfoVO((UserInfo) value));
@@ -133,7 +137,8 @@ public class FollowService extends ServiceImpl<FollowMapper, Follow> implements 
     }
     public List<BasicUserInfoVO> getFanListByPage(Integer userId, Integer page, Integer pageSize) {
         List<BasicUserInfoVO> basicUserInfoVOList = new ArrayList<>();
-        List<UserInfo> userInfos = followMapper.batchQueryFansInfo(userId, page, pageSize);
+        int start = (page - 1) * pageSize;
+        List<UserInfo> userInfos = followMapper.batchQueryFansInfo(userId, start, pageSize);
         for(UserInfo userInfo:userInfos){
             basicUserInfoVOList.add(UserMapstruct.INSTANCT.converToBasicUserInfoVO(userInfo));
         }

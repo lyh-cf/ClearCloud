@@ -47,7 +47,7 @@ public class AuthManagerController {
     @ApiOperation("登录认证")
     @PostMapping("/login")
     public BaseResponse<?> login(@Valid @RequestBody LoginDTO loginDTO) {
-        UserInfo userInfo = userInfoService.getUserInfo(loginDTO.getUserEmail());
+        UserInfo userInfo = userInfoService.getUserInfoByUserEmail(loginDTO.getUserEmail());
         if (userInfo == null) return BaseResponse.error("用户不存在");
         if (!userInfo.getPassWord().equals(SM3Util.encryptPassword(loginDTO.getPassWord())))return BaseResponse.error("密码错误");
         LoginVO loginVO= UserMapstruct.INSTANCT.conver(userInfo);
@@ -57,7 +57,7 @@ public class AuthManagerController {
         缓存用户基本信息，用hash结构存储，key为：业务前缀+id，hash-key为用户的id，hash-value为user-info
         key为：业务前缀+id 可以防止big-key问题
         */
-        redisUtil.set(RedisConstants.USER_INFO_KEY_PREFIX+userInfo.getPkUserId(),userInfo,RedisConstants.USER_INFORMATION_TTL);
+        redisUtil.set(RedisConstants.USER_INFO_KEY_PREFIX+userInfo.getPkUserId(),userInfo);
         UserCount userCount=userCountService.getById(userInfo.getPkUserId());
         redisUtil.set(RedisConstants.USER_COUNT_KEY_PREFIX+userInfo.getPkUserId(),userCount);
         return BaseResponse.success(loginVO);

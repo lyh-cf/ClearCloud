@@ -35,29 +35,25 @@ public class FollowController {
     private FollowService followService;
     @ApiOperation("关注接口")
     @GetMapping("/follow")
-    public BaseResponse<?> follow(HttpServletRequest httpServletRequest, @RequestParam Integer targetUserId) {
-        Integer userId = JwtUtil.getUserId(httpServletRequest);
+    public BaseResponse<?> follow(@RequestParam("userId") Integer userId, @RequestParam Integer targetUserId) {
         followService.follow(userId,targetUserId);
         return BaseResponse.success();
     }
     @ApiOperation("取关接口")
     @GetMapping("/unfollow")
-    public BaseResponse<?> unfollow(HttpServletRequest httpServletRequest, @RequestParam Integer targetUserId) {
-        Integer userId = JwtUtil.getUserId(httpServletRequest);
+    public BaseResponse<?> unfollow(@RequestParam("userId") Integer userId, @RequestParam Integer targetUserId) {
         followService.unFollow(userId,targetUserId);
         return BaseResponse.success();
     }
     @ApiOperation("分页获取关注列表接口")
     @GetMapping("/getFollowList")
-    public BaseResponse<?> getFollowList(HttpServletRequest httpServletRequest, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
-        Integer userId = JwtUtil.getUserId(httpServletRequest);
+    public BaseResponse<?> getFollowList(@RequestParam("userId") Integer userId, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
         List<BasicUserInfoVO> followListByPage = followService.getFollowListByPage(userId, page, pageSize);
         return BaseResponse.success(followListByPage);
     }
     @ApiOperation("获取粉丝列表接口")
     @GetMapping("/getFansList")
-    public BaseResponse<?> getFansList(HttpServletRequest httpServletRequest,@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
-        Integer userId = JwtUtil.getUserId(httpServletRequest);
+    public BaseResponse<?> getFansList(@RequestParam("userId") Integer userId,@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
         List<BasicUserInfoVO>basicUserInfoVOList=followService.getFanListByPage(userId,page,pageSize);
         return BaseResponse.success(basicUserInfoVOList);
     }

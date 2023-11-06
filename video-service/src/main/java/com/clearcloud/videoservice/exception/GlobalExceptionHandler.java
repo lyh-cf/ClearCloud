@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
         //使用默认消息：请求参数错误
         return BaseResponse.error(StatusCodeEnum.PARAMS_ERROR.getMessage());
     }
-
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) //设置状态码为 500
     @ExceptionHandler(RuntimeException.class)
     public BaseResponse<?> runtimeExceptionHandler(RuntimeException e) {
         log.error("MyException: ", e);

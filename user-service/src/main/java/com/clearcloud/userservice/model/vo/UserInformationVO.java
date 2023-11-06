@@ -1,8 +1,10 @@
 package com.clearcloud.userservice.model.vo;
 
+import com.clearcloud.model.VideoStreamVO;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /*
  *@title UserInformationVO
@@ -14,6 +16,7 @@ import java.io.Serializable;
 @Data
 public class UserInformationVO implements Serializable {
     private Integer pkUserId;
+    private List<VideoStreamVO> videoInfoList;
     private String userEmail;
     private String nickName;
     private String avatar;

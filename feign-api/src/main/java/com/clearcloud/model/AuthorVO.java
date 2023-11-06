@@ -1,4 +1,4 @@
-package com.clearcloud.videoservice.model.vo;
+package com.clearcloud.model;
 
 import lombok.Data;
 
@@ -16,6 +16,7 @@ public class AuthorVO implements Serializable {
     private Integer pkUserId;//作者的id
     private String nickName;//作者的昵称
     private String avatar;//作者的头像
-    private String signature;//作者的签名
     private boolean isFollow;//该用户是否关注这个作者
+    private boolean isCollect;//该用户是否收藏
+    private boolean isLike;//该用户是否点赞
 }

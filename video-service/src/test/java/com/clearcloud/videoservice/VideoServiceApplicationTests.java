@@ -1,15 +1,24 @@
 package com.clearcloud.videoservice;
 
+import com.clearcloud.base.model.RedisConstants;
+import com.clearcloud.videoservice.model.pojo.VideoInfo;
+import com.clearcloud.videoservice.service.VideoInfoService;
+import com.clearcloud.videoservice.utils.RedisUtil;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -20,6 +29,13 @@ class VideoServiceApplicationTests {
     private RedisTemplate<String, Object> redisTemplate;
     @Resource(name = "redissonClient")
     private RedissonClient redissonClient;
+    @Autowired
+    private VideoInfoService videoInfoService;
+
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+    @Autowired
+    private RedisUtil redisUtil;
     @Test
     void testZset() {
         for(int i=1;i<=5;i++) redisTemplate.opsForZSet().add("zset",i,i);
@@ -85,6 +101,16 @@ class VideoServiceApplicationTests {
 
         list.forEach(System.out::println);
     }
+//    @Test
+//    void testBatchGet2(){
+//        List<Integer> authorIdList=new ArrayList<>();
+//        authorIdList.add(54);
+//        List<String> redisKeysSet = new ArrayList<>();
+//        for (int i : authorIdList) redisKeysSet.add(RedisConstants.USER_INFO_KEY_PREFIX + i);
+//        System.out.println("redisKeysSet:"+redisKeysSet);
+//        List<Object> objects = redisUtil.batchGet(redisKeysSet);
+//        System.out.println(objects);
+//    }
     @Test
     void testBatchSet(){
         Map<String, Object> data = new HashMap<>();
@@ -97,5 +123,22 @@ class VideoServiceApplicationTests {
             });
             return null;
         });
+    }
+    @Test
+//    @Transactional
+    void test(){
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            // ....  业务代码
+            videoInfoService.save(new VideoInfo());
+            redisTemplate.opsForValue().set("Test",1);
+            int i=1/0;
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            e.printStackTrace();
+            transactionManager.rollback(status);
+        }
+
+
     }
 }

@@ -570,6 +570,26 @@ public final class RedisUtil {
             return 0;
         }
     }
+//    public List<Object> batchGet(List<String>keys){
+//        RedisSerializer<String> stringSerializer = redisTemplate.getStringSerializer();
+//        //第二个参数是指定结果反序列化器，用于反序列化管道中读到的数据，不是必传，
+//        //如果不传，则使用自定义RedisTemplate的配置，
+//        //如果没有自定义，则使用RedisTemplate默认的配置（JDK反序列化）
+//        return redisTemplate.executePipelined(new RedisCallback<Object>() {
+//            @Override
+//            public Object doInRedis( RedisConnection connection) throws DataAccessException {
+//                for(String key:keys){
+//                    connection.get(key.getBytes());
+//                }
+//                //这里bytes只会获取到null，因为这里get操作只是放在管道里面，并没有
+//                //真正执行，所以获取不到值
+//                //byte[] bytes = connection.get("test:1".getBytes());
+//                //executePipelined 这个方法需要返回值为null，不然会抛异常，
+//                //这一点可以查看executePipelined源码
+//                return null;
+//            }
+//        }, stringSerializer);
+//    }
     public Map<String, Object> batchGet(Set<String>keys){
         //这里获取String类型的序列化器
         RedisSerializer<String> stringSerializer = redisTemplate.getStringSerializer();
