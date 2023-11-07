@@ -17,6 +17,7 @@ public class VideoStreamVO implements Serializable {
     private Integer pkVideoId;//视频id
     private AuthorVO authorVO;//作者信息
     private String type;//视频分区类型
+    private Integer userId;
     private String videoDescription;//视频描述/标题
     private String videoCover;//视频封面url
     private String playUrl;//视频播放url

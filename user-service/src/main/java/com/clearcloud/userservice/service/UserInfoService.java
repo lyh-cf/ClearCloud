@@ -75,8 +75,9 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> imple
         List<Integer> pkVideoIdList = videoStreamVOList.stream()
                 .map(VideoStreamVO::getPkVideoId)
                 .toList();
-        List<Integer> authorIdList = new ArrayList<>();
-        for(int i=0;i<pkVideoIdList.size();i++) authorIdList.add(userId);//自己的作品
+        List<Integer> authorIdList = videoStreamVOList.stream()
+                .map(VideoStreamVO::getUserId)
+                .toList();
         List<AuthorVO> authorVOList = getAuthorVO(userId, pkVideoIdList, authorIdList);
         for(int i=0;i<videoStreamVOList.size();i++){
             videoStreamVOList.get(i).setAuthorVO(authorVOList.get(i));
@@ -104,7 +105,7 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> imple
                     .collect(Collectors.toSet());
         }
         //该用户点赞的所有视频id
-        Set<Integer> likeVideoIds= (Set<Integer>) redisUtil.get(RedisConstants.LIKE_KEY_PREFIX+userId);
+        Set likeVideoIds=redisUtil.sGet(RedisConstants.LIKE_KEY_PREFIX+userId);
         //组装
         for(int i=0;i<authorVOS.size();i++){
             if(userId!=null){

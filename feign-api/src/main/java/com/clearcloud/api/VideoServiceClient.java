@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 /*
  *@title VideoServiceClient
@@ -17,4 +18,8 @@ import java.util.List;
 public interface VideoServiceClient {
     @GetMapping("/getUserWorks")
     List<VideoStreamVO> getUserWorks(@RequestParam("userId") Integer userId);
+    @GetMapping("/getLikeWorks")
+    List<VideoStreamVO> getLikeWorks(@RequestParam("userId") Integer userId);
+    @GetMapping("/getCollectWorks")
+    List<VideoStreamVO> getCollectWorks(@RequestParam("pkVideoIdList")Set<Integer>pkVideoIdList);
 }

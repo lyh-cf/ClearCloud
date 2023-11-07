@@ -20,7 +20,8 @@ public interface VideoMapstruct {
     VideoMapstruct INSTANCT = Mappers.getMapper(VideoMapstruct.class);
     @Mappings({
             @Mapping(source = "videoInfo.pkVideoId", target = "pkVideoId"),
-            @Mapping(source = "videoInfo.createTime", target = "createTime")
+            @Mapping(source = "videoInfo.createTime", target = "createTime"),
+            @Mapping(source = "videoInfo.userId", target = "userId")
     })
     VideoStreamVO conver(VideoInfo videoInfo, VideoCount videoCount);
 }

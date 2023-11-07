@@ -119,4 +119,23 @@ public class VideoInfoService extends ServiceImpl<VideoInfoMapper, VideoInfo>  i
         }
         return videoStreamVOList;
     }
+    public List<VideoStreamVO> getUserVideoInfo(Set<Integer> pkVideoIdList){
+        List<VideoStreamVO> videoStreamVOList = new ArrayList<>();
+        //批量查作品VideoInfo
+        List<VideoInfo> userWorks = videoInfoMapper.getRecordsByIds(pkVideoIdList);
+        //拼凑redis的key
+        List<String> redisKeysSet = new ArrayList<>();
+        for (int i : pkVideoIdList) redisKeysSet.add(RedisConstants.VIDEO_COUNT_KEY_PREFIX + i);
+        //批量查作品VideoCount
+        List<VideoCount> videoCounts = new ArrayList<>();
+        List<Object> objects = redisTemplate.opsForValue().multiGet(redisKeysSet);
+        for (Object obj : objects) {
+            videoCounts.add((VideoCount) obj);
+        }
+        //组装对象
+        for (int i = 0; i < userWorks.size(); i++) {
+            videoStreamVOList.add(VideoMapstruct.INSTANCT.conver(userWorks.get(i), videoCounts.get(i)));
+        }
+        return videoStreamVOList;
+    }
 }

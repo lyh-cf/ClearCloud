@@ -138,7 +138,9 @@ class VideoServiceApplicationTests {
             e.printStackTrace();
             transactionManager.rollback(status);
         }
-
+    }
+    @Test
+    void synchronization(){
 
     }
 }

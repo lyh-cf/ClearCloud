@@ -16,5 +16,5 @@ import java.util.List;
  * @since 2023-11-05
  */
 public interface CollectMapper extends BaseMapper<Collect> {
-    public List<Integer>getCollectedVideoIdByUserId(@Param("userId")Integer userId);
+     List<Integer>getCollectedVideoIdByUserId(@Param("userId")Integer userId);
 }

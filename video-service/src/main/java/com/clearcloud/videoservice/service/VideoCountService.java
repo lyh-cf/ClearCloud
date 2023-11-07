@@ -34,25 +34,27 @@ public class VideoCountService extends ServiceImpl<VideoCountMapper, VideoCount>
         VideoCount videoCount=(VideoCount) redisUtil.get(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoId);
         videoCount.setCollectedCount(videoCount.getCollectedCount()+1);
         redisUtil.set(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoId,videoCount);
-        //注册一个事务同步器，这个事务同步器，可以允许在事务提交后，做一些事情
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override
-            public void afterCommit() {
-                userService.collectVideo(userId,videoId);
-            }
-        });
+//        //注册一个事务同步器，这个事务同步器，可以允许在事务提交后，做一些事情
+//        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+//            @Override
+//            public void afterCommit() {
+//                userService.collectVideo(userId,videoId);
+//            }
+//        });
+        userService.collectVideo(userId,videoId);
     }
     @Transactional
     public void cancelCollectVideo(Integer userId,Integer videoId){
         VideoCount videoCount=(VideoCount) redisUtil.get(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoId);
         videoCount.setCollectedCount(videoCount.getCollectedCount()-1);
         redisUtil.set(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoId,videoCount);
-        //注册一个事务同步器，这个事务同步器，可以允许在事务提交后，做一些事情
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override
-            public void afterCommit() {
-                userService.cancelCollectVideo(userId,videoId);
-            }
-        });
+//        //注册一个事务同步器，这个事务同步器，可以允许在事务提交后，做一些事情
+//        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+//            @Override
+//            public void afterCommit() {
+//                userService.cancelCollectVideo(userId,videoId);
+//            }
+//        });
+        userService.cancelCollectVideo(userId,videoId);
     }
 }

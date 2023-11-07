@@ -17,7 +17,9 @@
         and `type`=#{type}
     </select>
     <select id="getSelfWorks" resultType="com.clearcloud.videoservice.model.pojo.VideoInfo">
-        select pk_video_id,user_id,`type`,video_description,video_cover,play_url,create_time from video_info
-        where user_id =#{userId}
+        select pk_video_id, user_id, `type`, video_description, video_cover, play_url, create_time
+        from video_info
+        where user_id = #{userId}
+        order by create_time
     </select>
 </mapper>

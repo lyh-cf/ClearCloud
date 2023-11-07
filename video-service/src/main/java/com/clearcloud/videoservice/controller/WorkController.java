@@ -1,5 +1,6 @@
 package com.clearcloud.videoservice.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.clearcloud.base.model.BaseResponse;
 import com.clearcloud.base.model.RedisConstants;
 import com.clearcloud.base.utils.JwtUtil;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /*
@@ -58,7 +60,19 @@ public class WorkController {
         UploadVideoVO uploadVideoVO = videoInfoService.uploadVideo(video, userId);
         return BaseResponse.success(uploadVideoVO);
     }
+    @ApiOperation("删除作品接口")
+    @DeleteMapping("/deleteVideo")
+    public BaseResponse<?> deleteVideo(@RequestParam("videoId")Integer videoId) {
+        LambdaUpdateWrapper<VideoInfo> lambdaUpdateWrapper1 = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper1.eq(VideoInfo::getPkVideoId, videoId);
+        videoInfoService.remove(lambdaUpdateWrapper1);
 
+        LambdaUpdateWrapper<VideoCount> lambdaUpdateWrapper2 = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper2.eq(VideoCount::getPkVideoId, videoId);
+        videoCountService.remove(lambdaUpdateWrapper2);
+        redisUtil.del(RedisConstants.VIDEO_COUNT_KEY_PREFIX+videoId);
+        return BaseResponse.success();
+    }
     @ApiOperation("发布作品接口")
     @PostMapping("/publishWork")
     public BaseResponse<?> publishWork(@RequestBody VideoInfo videoInfo) {
@@ -92,26 +106,22 @@ public class WorkController {
     @ApiOperation("获取用户的作品接口,用于feign接口调用")
     @GetMapping("/getUserWorks")
     public List<VideoStreamVO> getUserWorks(@RequestParam("userId") Integer userId) {
-        List<VideoStreamVO> videoStreamVOList = new ArrayList<>();
         //批量查作品VideoInfo
         List<VideoInfo> userWorks = videoInfoMapper.getSelfWorks(userId);
-        List<Integer> pkVideoIdList = userWorks.stream()
+        Set<Integer> pkVideoIdList = userWorks.stream()
                 .map(VideoInfo::getPkVideoId)
-                .toList();
-        //拼凑redis的key
-        List<String> redisKeysSet = new ArrayList<>();
-        for (int i : pkVideoIdList) redisKeysSet.add(RedisConstants.VIDEO_COUNT_KEY_PREFIX + i);
-        //批量查作品VideoCount
-        List<VideoCount> videoCounts = new ArrayList<>();
-        List<Object> objects = redisTemplate.opsForValue().multiGet(redisKeysSet);
-        for (Object obj : objects) {
-            videoCounts.add((VideoCount) obj);
-
-        }
-        //组装对象
-        for (int i = 0; i < userWorks.size(); i++) {
-            videoStreamVOList.add(VideoMapstruct.INSTANCT.conver(userWorks.get(i), videoCounts.get(i)));
-        }
-        return videoStreamVOList;
+                .collect(Collectors.toSet());
+        return videoInfoService.getUserVideoInfo(pkVideoIdList);
+    }
+    @ApiOperation("获取用户喜欢的视频接口,用于feign接口调用")
+    @GetMapping("/getLikeWorks")
+    public List<VideoStreamVO> getLikeWorks(@RequestParam("userId") Integer userId) {
+        Set<Integer> pkVideoIdList=(Set)redisUtil.sGet(RedisConstants.LIKE_KEY_PREFIX+userId);
+        return videoInfoService.getUserVideoInfo(pkVideoIdList);
+    }
+    @ApiOperation("获取用户收藏的视频接口,用于feign接口调用")
+    @GetMapping("/getCollectWorks")
+    public List<VideoStreamVO> getCollectWorks(@RequestParam("pkVideoIdList")Set<Integer>pkVideoIdList) {
+        return videoInfoService.getUserVideoInfo(pkVideoIdList);
     }
 }
